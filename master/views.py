@@ -7,13 +7,13 @@ import urllib2
 from django.core.urlresolvers import reverse
 from django.contrib.admin.views.decorators import staff_member_required
 from django.template import RequestContext, loader
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect,HttpResponseForbidden
 from django.views.generic import ListView
 from django.views.decorators.csrf import csrf_exempt
 from django.views.generic.edit import FormView
 
-from master.models import Survey, CityReference, Rapid_Slum_Appresal, Slum
-from master.forms import SurveyCreateForm, Rapid_Slum_AppresalForm
+from master.models import Survey, CityReference, Rapid_Slum_Appresal, Slum, ExampleModel
+from master.forms import SurveyCreateForm, Rapid_Slum_AppresalForm, ImageUploadForm
 
 from django.views.generic.base import View
 from wkhtmltopdf.views import PDFTemplateResponse
@@ -141,15 +141,12 @@ class mypdfview(View):#url="http://kc.shelter-associates.org/api/v1/data/161?for
     data = json.loads(content)
     p=data[0]
     result=p['_attachments']
-    print type(result)
     slumname ="PuneSlum"
     datadict = {slumname :"PuneSlum"}
     SurveyNumber = 1
     img ="http://45.56.104.240:8001/media/"+result[0]['filename']
-    template='report.html'
-    print datadict[slumname]
+    template='report.html'#print datadict[slumname]
     context= {'img':img,'data':data,'datadict':datadict}
-    print img
     def get(self, request):
         response = PDFTemplateResponse(request=request,
                                         template=self.template,
@@ -290,12 +287,15 @@ def ins(request):
 
 """
 
-def ins(request):
-    form = Rapid_Slum_AppresalForm()
-    print request.POST #Slumref = Slum.objects.get(id=request.POST['slum_name'])
-    if request.method == 'POST':
+class RapidSlumAppresalView(FormView):
+    template_name = '2.html'
+    form_class = Rapid_Slum_AppresalForm
+    def post(self, request):
+        print request.POST
+        print form_class.is_valid()
+        Slumref = Slum.objects.get(id=request.POST['slum_name'])
         R = Rapid_Slum_Appresal(
-            slum_name = Slum.objects.get(id=request.POST['slum_name']),
+            slum_name = Slumref ,
             approximate_population= request.POST['approximate_population'],
             toilet_cost=request.POST['toilet_cost'],            
             toilet_seat_to_persons_ratio = request.POST['toilet_seat_to_persons_ratio'],
@@ -307,14 +307,7 @@ def ins(request):
             image4=request.POST['image4']            
         )
         R.save()
-    return render(request, '2_boot.html', {'form': form})
-
-
-class RapidSlumAppresalView(FormView):
-    print FormView
-    template_name = '2.html'
-    form_class = Rapid_Slum_AppresalForm
-
+        return HttpResponse('done')
 
 
 
@@ -326,8 +319,7 @@ from django.views.generic.base import View
 
 
 class ClassBasedView(View):
-    def get(self, request,Rapid_Slum_Appresal_id):
-        print self
+    def get(self,request,Rapid_Slum_Appresal_id):
         R = Rapid_Slum_Appresal.objects.get(pk=Rapid_Slum_Appresal_id)#Slumref= Slum.objects.get(id=R.slum_name) 
         form = Rapid_Slum_AppresalForm(instance= R)
         context = {'form': form}
@@ -355,8 +347,9 @@ class ClassBasedView(View):
 def edit(request,Rapid_Slum_Appresal_id):
     R = Rapid_Slum_Appresal.objects.get(pk=Rapid_Slum_Appresal_id)#Slumref= Slum.objects.get(id=R.slum_name) 
     form = Rapid_Slum_AppresalForm(instance= R)
+    a=form.is_valid()
+    print a
     if request.method == 'POST':
-        print request.POST
         slum_name =  Slum.objects.get(id=request.POST['slum_name']),
         approximate_population= request.POST['approximate_population']
         toilet_cost=request.POST['toilet_cost']           
@@ -368,5 +361,129 @@ def edit(request,Rapid_Slum_Appresal_id):
         image3=request.POST['image3']
         image4=request.POST['image4']  
         R.save()
+        print request.POST
     return render(request, '3.html', {'form': form})
+
+
+
+
+
+
+
+
+
+
+"""
+@csrf_exempt
+def ins(request):
+    print request.POST
+    form = Rapid_Slum_AppresalForm(request.POST) 
+    if request.method == 'POST':
+        if form.is_valid():
+            Slumref = Slum.objects.get(id=request.POST['slum_name'])
+            print Slumref
+            print "I am in valid Block"
+            R = Rapid_Slum_Appresal(
+                slum_name = Slumref,
+                approximate_population= request.POST['approximate_population'],
+                toilet_cost=request.POST['toilet_cost'],            
+                toilet_seat_to_persons_ratio = request.POST['toilet_seat_to_persons_ratio'],
+                percentage_with_an_individual_water_connection = request.POST['percentage_with_an_individual_water_connection'],
+                frequency_of_clearance_of_waste_containers = request.POST['frequency_of_clearance_of_waste_containers'],
+                image1=request.POST['image1'],
+                image2=request.POST['image2'],
+                image3=request.POST['image3'],
+                image4=request.POST['image4']            
+            )
+            R.save()
+            return  HttpResponseRedirect('/admin/ins')
+        else:
+            print "I am in invalid Block"
+            print form.errors
+                       
+    else:
+        form = Rapid_Slum_AppresalForm()
+    return render(request, '2_boot.html', {'form': form})
+
+"""
+
+def inst(request):
+    R = Rapid_Slum_Appresal()
+    form = Rapid_Slum_AppresalForm(request.POST,instance=R) 
+    print request.POST
+    if request.method == 'POST':
+        Slumref = Slum.objects.get(id=request.POST['slum_name'])
+        print Slumref
+        R = Rapid_Slum_Appresal(
+                slum_name = Slumref,
+                approximate_population= request.POST['approximate_population'],
+                toilet_cost=request.POST['toilet_cost'],            
+                toilet_seat_to_persons_ratio = request.POST['toilet_seat_to_persons_ratio'],
+                percentage_with_an_individual_water_connection = request.POST['percentage_with_an_individual_water_connection'],
+                frequency_of_clearance_of_waste_containers = request.POST['frequency_of_clearance_of_waste_containers'],
+                image1=request.POST['image1'],
+                image2=request.POST['image2'],
+                image3=request.POST['image3'],
+                image4=request.POST['image4']            
+            )
+        R.save()
+    return render(request, '2_boot.html', {'form': form})
+
+"""
+
+def insert(request):
+    errors =[]
+    form = Rapid_Slum_AppresalForm(request.POST,request.FILES)
+    print request.POST
+    print request.FILES
+    if request.method == 'POST':
+        form = Rapid_Slum_AppresalForm(request.POST,request.FILES)
+        if form.is_valid():
+            print "hello form is valid"            
+            Slumref = Slum.objects.get(id=request.POST['slum_name'])
+            R = Rapid_Slum_Appresal(
+                slum_name = Slumref,
+                approximate_population= request.POST['approximate_population'],
+                toilet_cost=request.POST['toilet_cost'],            
+                toilet_seat_to_persons_ratio = request.POST['toilet_seat_to_persons_ratio'],
+                percentage_with_an_individual_water_connection = request.POST['percentage_with_an_individual_water_connection'],
+                frequency_of_clearance_of_waste_containers = request.POST['frequency_of_clearance_of_waste_containers'],
+                image1=request.FILES['image1'],
+                image2=request.FILES['image2'],
+                image3=request.FILES['image3'],
+                image4=request.FILES['image4']            
+            )
+            R.save()
+    return render(request, 'form.html', {'form': form,'errors':errors})
+
+"""
+
+def upload_pic(request):
+    form = ImageUploadForm(request.POST, request.FILES)
+    if request.method == 'POST':
+        print request.POST
+        form = ImageUploadForm(request.POST, request.FILES)
+        if form.is_valid():
+            E =ExampleModel(model_pic=request.POST['image'])
+            E.save()
+            return HttpResponse('image upload success')
+    return render(request, 'example.html', {'form': form})
+
+
+
+
+
+def insert(request):
+    if request.method == 'POST':
+        form = Rapid_Slum_AppresalForm(request.POST,request.FILES)
+        a =form.is_valid()
+        print a
+        if a is True:
+            print "form is saved"
+            form.save()
+        else:
+            print form.errors    
+    else:
+        form = Rapid_Slum_AppresalForm()        
+    return render(request, 'boot_6.html', {'form': form})
 

@@ -107,7 +107,7 @@ class ElectoralWard(models.Model):
 class Slum(models.Model):
     """Slum Database"""
     electoral_ward = models.ForeignKey(ElectoralWard)
-    name = models.CharField(max_length=100)
+    name = models.CharField(max_length=100,default="None")
     shape = models.CharField(max_length=2048)
     description = models.CharField(max_length=100)
     shelter_slum_code = models.CharField(max_length=512)
@@ -284,4 +284,5 @@ class Individual_Fatsheet(models.Model):
     img = models.ImageField()
 
  
-            
+class ExampleModel(models.Model):
+    model_pic = models.ImageField()            

@@ -111,19 +111,33 @@ class CityFrom(forms.ModelForm):
 
 
 class Rapid_Slum_AppresalForm(forms.ModelForm):
+    approximate_population = forms.IntegerField(required=True)
+    toilet_cost = forms.IntegerField(required=True)
+    toilet_seat_to_persons_ratio = forms.IntegerField(required=True)
+    percentage_with_an_individual_water_connection = forms.IntegerField(required=True)
+    frequency_of_clearance_of_waste_containers = forms.IntegerField(required=True)
     class Meta:
         model = Rapid_Slum_Appresal
         fields = (
-        'slum_name' 
-    ,'approximate_population'
-    ,'toilet_cost'
-    ,'toilet_seat_to_persons_ratio'
-    ,'percentage_with_an_individual_water_connection' 
-    ,'frequency_of_clearance_of_waste_containers'
-    ,'image1' 
-    ,'image2'
-    ,'image3' 
-    ,'image4') 
-        
-
+        'slum_name',
+        'approximate_population',
+        'toilet_cost',
+        'toilet_seat_to_persons_ratio'
+        ,'percentage_with_an_individual_water_connection' 
+        ,'frequency_of_clearance_of_waste_containers'
+        ,'image1' 
+        ,'image2'
+        ,'image3' 
+        ,'image4'
+        )
+    def clean_slum_name(self):
+        slum_name = self.cleaned_data.get('slum_name')
+        if slum_name is None:
+            raise forms.ValidationError("This Field is required")
+        return slum_name     
+    
+   
+class ImageUploadForm(forms.Form):
+    """Image upload form."""
+    image = forms.ImageField()
 
