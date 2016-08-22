@@ -168,5 +168,3 @@ class ReportForm(forms.Form):
         form_Name_List.append(i)
     form = forms.ChoiceField(choices=form_Name_List)
     
-
-

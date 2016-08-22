@@ -4,7 +4,7 @@
 from django.contrib import admin
 from django.contrib.gis import admin
 from master.models import CityReference, City, \
-    AdministrativeWard, ElectoralWard, Slum, WardOfficeContact, ElectedRepresentative, Rapid_Slum_Appraisal
+    AdministrativeWard, ElectoralWard, Slum, WardOfficeContact, ElectedRepresentative, Rapid_Slum_Appraisal, Survey
 from master.forms import CityFrom, AdministrativeWardFrom, ElectoralWardForm, SlumForm
 
 # Register your models here.
