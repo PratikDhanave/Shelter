@@ -314,3 +314,6 @@ class drainage(models.Model):
     slum_name = models.ForeignKey(Slum)
     drainage_image = models.ImageField(upload_to=DRAINAGE_PHOTO,blank=True, null=True)
    
+
+class Household(models.Model):
+    pass

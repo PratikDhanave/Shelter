@@ -182,3 +182,6 @@ class DrainageForm(forms.ModelForm):
         model = drainage
         fields = '__all__'
 
+
+class KMLForm(forms.Form):
+    kmlfile = forms.FileField()
