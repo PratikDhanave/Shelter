@@ -79,9 +79,9 @@
                 </ex-property>
             </list-property>
             <property name="odaDriverClass">org.postgresql.Driver</property>
-            <property name="odaURL">jdbc:postgresql://192.168.0.154:5433/kobotoolbox</property>
-            <property name="odaUser">kobo</property>
-            <encrypted-property name="odaPassword" encryptionID="jce">kobo</encrypted-property>
+            <property name="odaURL">jdbc:postgresql://********/******</property>
+            <property name="odaUser">*****</property>
+            <encrypted-property name="odaPassword" encryptionID="jce">******</encrypted-property>
         </oda-data-source>
         <oda-data-source extensionID="org.eclipse.birt.report.data.oda.jdbc" name="djangoapp" id="2206">
             <list-property name="privateDriverProperties">
@@ -101,9 +101,9 @@
                 </ex-property>
             </list-property>
             <property name="odaDriverClass">org.postgresql.Driver</property>
-            <property name="odaURL">jdbc:postgresql://45.56.104.240/shelter_migrate</property>
-            <property name="odaUser">shelter</property>
-            <encrypted-property name="odaPassword" encryptionID="jce">Sh3lt3rAss0ciat3s</encrypted-property>
+            <property name="odaURL">jdbc:postgresql://*****/*****</property>
+            <property name="odaUser">*****</property>
+            <encrypted-property name="odaPassword" encryptionID="jce">*****</encrypted-property>
         </oda-data-source>
     </data-sources>
     <data-sets>
@@ -1321,7 +1321,7 @@ from logger_instance where json->>'group_vq77l17/slum_name'= ? and json->>'group
                                 <property name="textAlign">right</property>
                                 <property name="width">300px</property>
                                 <property name="contentType">html</property>
-                                <text-property name="content"><![CDATA[&amp;copy copyright Shelter Associates, <value-of>(new Date()).toLocaleDateString().slice(13)</value-of>]]></text-property>
+                                <text-property name="content"><![CDATA[&amp;copy copyright Shelter Associates ,<value-of>(new Date()).toLocaleDateString().slice(12)</value-of>]]></text-property>
                             </text>
                         </cell>
                         <cell id="2147">

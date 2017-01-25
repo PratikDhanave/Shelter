@@ -28,7 +28,7 @@
             <property name="dataType">string</property>
             <property name="distinct">true</property>
             <simple-property-list name="defaultValue">
-                <value type="constant">RIM NEW</value>
+                <value type="constant">RIM Final</value>
             </simple-property-list>
             <list-property name="selectionList"/>
             <property name="paramType">simple</property>
@@ -44,7 +44,7 @@
             <property name="dataType">string</property>
             <property name="distinct">true</property>
             <simple-property-list name="defaultValue">
-                <value type="constant">2721714910101</value>
+                <value type="constant">272538757101</value>
             </simple-property-list>
             <list-property name="selectionList"/>
             <property name="paramType">simple</property>
@@ -74,9 +74,9 @@
                 </ex-property>
             </list-property>
             <property name="odaDriverClass">org.postgresql.Driver</property>
-            <property name="odaURL">jdbc:postgresql://45.56.104.240/onadata1</property>
-            <property name="odaUser">shelter</property>
-            <encrypted-property name="odaPassword" encryptionID="jce">Sh3lt3rAss0ciat3s</encrypted-property>
+            <property name="odaURL">jdbc:postgresql://******/******</property>
+            <property name="odaUser">******</property>
+            <encrypted-property name="odaPassword" encryptionID="jce">******</encrypted-property>
         </oda-data-source>
         <oda-data-source extensionID="org.eclipse.birt.report.data.oda.jdbc" name="Data Source1" id="2206">
             <list-property name="privateDriverProperties">
@@ -96,9 +96,9 @@
                 </ex-property>
             </list-property>
             <property name="odaDriverClass">org.postgresql.Driver</property>
-            <property name="odaURL">jdbc:postgresql://45.56.104.240/shelter_migrate</property>
-            <property name="odaUser">shelter</property>
-            <encrypted-property name="odaPassword" encryptionID="jce">Sh3lt3rAss0ciat3s</encrypted-property>
+            <property name="odaURL">jdbc:postgresql://******/******</property>
+            <property name="odaUser">******</property>
+            <encrypted-property name="odaPassword" encryptionID="jce">******</encrypted-property>
         </oda-data-source>
         <oda-data-source extensionID="org.eclipse.birt.report.data.oda.jdbc" name="docker" id="5864">
             <list-property name="privateDriverProperties">
@@ -118,9 +118,9 @@
                 </ex-property>
             </list-property>
             <property name="odaDriverClass">org.postgresql.Driver</property>
-            <property name="odaURL">jdbc:postgresql://192.168.0.154:5433/kobotoolbox</property>
-            <property name="odaUser">kobo</property>
-            <encrypted-property name="odaPassword" encryptionID="base64">a29ibw==</encrypted-property>
+            <property name="odaURL">jdbc:postgresql://******/******</property>
+            <property name="odaUser">******</property>
+            <encrypted-property name="odaPassword" encryptionID="base64">******==</encrypted-property>
         </oda-data-source>
     </data-sources>
     <data-sets>
@@ -8098,10 +8098,10 @@ b;&#13;
                         <property name="width">3.1979166666666665in</property>
                     </column>
                     <column id="2142">
-                        <property name="width">4.770833333333333in</property>
+                        <property name="width">5in</property>
                     </column>
                     <column id="2143">
-                        <property name="width">3.3333333333333335in</property>
+                        <property name="width">3.1041666666666665in</property>
                     </column>
                     <row id="2144">
                         <cell id="2145">
@@ -8124,7 +8124,7 @@ b;&#13;
                                 <property name="textAlign">right</property>
                                 <property name="width">300px</property>
                                 <property name="contentType">html</property>
-                                <text-property name="content"><![CDATA[&amp;copy copyright Shelter Associates, 2013]]></text-property>
+                                <text-property name="content"><![CDATA[&amp;copy copyright Shelter Associates ,<value-of>(new Date()).toLocaleDateString().slice(12)</value-of>]]></text-property>
                             </text>
                         </cell>
                         <cell id="2147">
