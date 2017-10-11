@@ -24,10 +24,8 @@ from django.views.decorators.clickjacking import xframe_options_exempt
 from master.models import Survey, CityReference, Rapid_Slum_Appraisal, \
 						  Slum, AdministrativeWard, ElectoralWard, City, \
 						  WardOfficeContact, ElectedRepresentative, drainage
-from master.forms import SurveyCreateForm, ReportForm, Rapid_Slum_AppraisalForm, DrainageForm, LoginForm
+from master.forms import SurveyCreateForm, ReportForm, Rapid_Slum_AppraisalForm, DrainageForm
 from sponsor.models import SponsorProjectDetails
-from django.contrib.auth import authenticate, login
-from django.contrib.auth.models import User, Group
 from component.cipher import *
 import urllib
 
@@ -265,11 +263,12 @@ def slummap(request):
 def citymapdisplay(request):
 	city_dict={}
 	city_main={}
+	cipher = AESCipher()
 
 	for c in City.objects.all():
 		city_dict={}
 		city_dict["name"]= c.name.city_name
-		city_dict["id"]= c.id
+		city_dict["id"]= "city::"+cipher.encrypt(str(c.id))
 		city_dict["lat"]= str(c.shape)
 		city_dict["bgColor"]= c.background_color
 		city_dict["borderColor"]= c.border_color
@@ -514,57 +513,16 @@ def familyrportgenerate(request):
 		data = {'error':'Not authorized'}
 	return HttpResponse(json.dumps(data),content_type='application/json')
 
-
-
-@csrf_exempt
-def user_login(request):
-	if request.method == 'POST':
-		form = LoginForm(request.POST)
-		if form.is_valid():
-			cd = form.cleaned_data
-			user = authenticate(username=cd['username'],password=cd['password'])
-			print request.user.groups.filter(name__in=['sponsor']).exists()
-			if user is not None:
-				if user.is_active:
-					login(request, user)
-					if (request.user.groups.filter(name__in=['sponsor']).exists()):
-						return HttpResponseRedirect('/sponsor/')
-					else:
-						return HttpResponseRedirect('/admin/')
-				else:
-					return HttpResponse('Disabled account')
-			else:
-				return HttpResponse('Invalid login')
+def city_wise_map(request, key):
+	cipher = AESCipher()
+	city = cipher.decrypt(key.split('::')[1])
+	city = City.objects.get(pk=int(city))
+	template = loader.get_template('city_wise_map.html')
+	data = {}
+	if city:
+		data['city_id'] = city.id
+		data['city_name'] = city.name.city_name
 	else:
-		form = LoginForm()
-	return render(request, 'login.html', {'form': form})
-
-
-
-
-
-@csrf_exempt
-def iframeuser(request):
-	return render(request, 'iframe.html', {})
-
-
-@csrf_exempt
-def user_login2(request):
-	if request.method == 'POST':
-		form = LoginForm(request.POST)
-		if form.is_valid():
-			cd = form.cleaned_data
-			user = authenticate(username=cd['username'],password=cd['password'])
-			print request.user.groups.filter(name__in=['sponsor']).exists()
-			if user is not None:
-				if user.is_active:
-					login(request, user)
-					return HttpResponseRedirect('/')
-				else:
-					return HttpResponse('Disabled account')
-			else:
-				return HttpResponse('Invalid login')
-	else:
-		form = LoginForm()
-	return render(request, 'login.html', {'form': form})
-	
+		data['error'] = "URL incorrect"
+	context = RequestContext(request, data)
+	return HttpResponse(template.render(context))
