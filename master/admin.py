@@ -127,3 +127,4 @@ admin.site.register(ElectoralWard,ElectoralWardFormAdmin)
 
 admin.site.register(Rapid_Slum_Appraisal)
 admin.site.register(drainage)
+admin.site.register(Survey)
