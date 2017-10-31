@@ -42,24 +42,50 @@ $(document).ready(function(){
     $("#Optionid").hide();
 
     $("#Optionsparam").hide(); 
+
     $("#Operation").hide();
 
 
-    $("#formid").on('change',function()
-    {
-        questionlist();
+    $("[name='formid']").on('change',function(event)
+    { 
+       // console.log(event.target.parents());
+  
+        var target = $(event.target);
+        
+        p = target.parent().parent();
+
+    //    console.log(p);
+
+ 
+        formkey=p.find("[name='formidselect'] option:selected").val();
+       
+        questionlist(p,formkey);
     });
 
-    $("#Questionid").on('change',function()
+    $("[name='Questionid']").on('change',function(event)
     {
-        $("#Optionid").hide(); 
-        optionlist();
+
+       // $("[name='Optionid']").hide(); 
+
+         var target = $(event.target);
+        
+        parentobject = target.parent().parent();
+
+        questionname=parentobject.find("[name='Questionidselect'] option:selected").text();
+
+        optionlist(parentobject,questionname);
     });
 
     $("button").click(function(){
-        $(".card").clone().appendTo("#cardlist");
+        $(".cardexample").first().clone(true).appendTo("#cardlist");
+        $("#cardlist").children().show(); 
     });
 });
+
+
+function emptyall(){
+  
+}
 
 
 function surveyformlist(){
@@ -96,18 +122,58 @@ function surveyformlist(){
 }
 
 
+$("body").click(function(event) {  
 
-function questionlist(){
-
-     $("#Optionid").hide(); 
-
-     $("#Operation").hide();
-
-    var formvalue = $("[name='formidselect'] option:selected").text();
+  var target = $(event.target);
     
-    var formkey  = $("[name='formidselect'] option:selected").val();
+//  console.log("siblings");
+
+  //console.log(target.parent().siblings());
+/*
+  if(target['selector']=='formidselect')
+  {
+    questionlist();    
+  }
+
+  if(target['selector']=='formidselect')
+  {
+    questionlist();    
+  }
+   if(target['selector']=='Questionidselect')
+  {
+    optionlist();    
+  } 
+*/  
+});
+
+
+
+
+function questionlist(parentobject,formkey){
+
+      console.log("quetiondropdown");
+
+      quetiondropdown =  parentobject.find("[name='Questionid']");
+
+      console.log(quetiondropdown);
+
+      quetionlist = parentobject.find("[name='Questionidselect']");
+
+      Operation = parentobject.find("[name='Operation']");
+
+      Optionsparam = parentobject.find("[name='Operation']");
+
+      console.log(quetionlist);
+
     
-    $('#Questionidselect').empty();
+   //   $(quetionlist).hide(); 
+
+   //  $(Operation).hide();
+
+   //  $(Optionsparam).hide(); 
+
+
+    $(quetionlist).empty();
 
     var url = "{% url 'questionlist' %}";
 
@@ -123,7 +189,8 @@ function questionlist(){
 
         success : function(json){
 
-                gform=json["form"];                
+                gform=json["form"];  
+
                 Questionarray=json["form"]; 
 
                 if(Questionarray.length!=0)                 
@@ -131,18 +198,18 @@ function questionlist(){
                     var str='<option value="';
              
                     str = str +"0" +'"'+'>' + "---select---" + '</option>';
-                    $('#Questionidselect').append(str);
-
+                    $(quetionlist).append(str);
 
                     for (i = 0; i < Questionarray.length; i++)
                     {
                         var str='<option value="';
                         str = str + Questionarray[i]["key"] +'"'+'>' + Questionarray[i]["value"] + '</option>';
-                        $('#Questionidselect').append(str);
+                        $(quetionlist).append(str);
   
                     }  
                   
-                    $("#Questionid").show();
+                    $(quetiondropdown).show();
+
                 }  
 
               }  
@@ -152,24 +219,30 @@ function questionlist(){
 
 }
 
-function optionlist(){
+function optionlist(questionname){
 
-    $('#Optionidselect').empty();
+    console.log(questionname);
 
-    var questionname = $("#Questionidselect option:selected").val();
+    $("[name='Optioncheckboxlist']").empty();
+
+    //var questionname = $("#Questionidselect option:selected").val();
         
     var optionslistarray = new Array();
 
     console.log("initial value of optionslistarray");
 
+    
     console.log(optionslistarray.length);
 
+
+    optionslistarray= Questionarray[0]["options"];
     try 
     {
         for (i = 0; i < gform.length; i++)
         {
           if(Questionarray[i]["key"]==questionname)
           {
+             console.log(Questionarray[i]["options"]);
              optionslistarray = Questionarray[i]["options"];
           }
         }
@@ -188,30 +261,11 @@ function optionlist(){
         $("#Optionsparam").hide(); 
     }
 
-    console.log(optionslistarray.length);
 
     if(optionslistarray.length!=0)
     { 
 
-        console.log("I am here in length check case");
- 
-        var str='<option value="';
-        
-        str = str +"0" +'"'+'>' + "---select---" + '</option>';
-    
-        $('#Optionidselect').append(str);
-
-
-        for(i = 0; i < optionslistarray.length; i++)
-        {
-            var str='<option value="';
-            str = str + optionslistarray[i]["key"] +'"'+'>' + optionslistarray[i]["value"] + '</option>';
-            $('#Optionidselect').append(str);
-  
-        }  
      
-
-
         for(i = 0; i < optionslistarray.length; i++)
         {
 
@@ -219,13 +273,16 @@ function optionlist(){
 
           str = str + optionslistarray[i]["value"] + "</li>"
 
-          $('#Optioncheckboxlist').append(str);
+          $("[name='Optioncheckboxlist']").append(str);
+  
   
         }  
      
          $("#Optionsparam").show(); 
-         $("#Optionid").show(); 
-        $("#Operation").hide();
+         $("#Optionidselect").show(); 
+         $("#Operation").hide();
+
+         console.log("I am here now");
       }
   
     console.log(optionslistarray);       
@@ -238,9 +295,7 @@ function optionlist(){
 
 <body>
 
-<div id="cardlist">
-
-<div style = "margin-left:2%;margin-right: 1%;" class ="card">
+<div style = "margin-left:2%;margin-right: 1%;display:none;" class="cardexample" id="cardexample" name="cardexample">
 
   <div id="rcorners2" style="width:90%;">
     
@@ -255,15 +310,15 @@ function optionlist(){
 
         
 
-       <div class = "col-md-5" id ="Questionid">
+       <div class = "col-md-5"  name = "Questionid" id ="Questionid">
             
-            <select id="Questionidselect" class="form-control">
+            <select id="Questionidselect"  name = "Questionidselect" class="form-control">
             </select>
 
         </div>
 
 
-        <div class = "col-md-2" id ="Optionsparam" >
+        <div class = "col-md-2" name= "Optionsparam" id ="Optionsparam" >
 
             <select class="form-control">
              <option value=""> equal </option>
@@ -274,8 +329,8 @@ function optionlist(){
 
         </div>
 
-        <div class="col-md-3" style="max-height:100px;overflow: auto;">
-              <ul class="list-group" id ="Optioncheckboxlist">
+        <div id="Optionidselect" name="Optionidselect" class="col-md-3" style="max-height:100px;overflow: auto;">
+              <ul class="list-group" name ="Optioncheckboxlist" id="Optioncheckboxlist">
               </ul>
         </div>
 
@@ -287,9 +342,111 @@ function optionlist(){
 
 
 
+<br>
+
+<div id ="Operation" name="Operation">
+      <div class="row">
+        
+        <div class = "col-md-4" id ="">
+
+          <select>
+           <option value="<=">greater than equal to </option>
+           <option value=">=">less than equal to</option>
+           <option value=">">greater than</option>
+           <option value="<">less than</option>
+          </select> 
+
+        </div>
+          
+         <div class = "col-md-4" id =""> 
+              <input type="text" name="" value="">
+         </div>         
+
+      </div>  
+    
+    <div class="row">
+        
+        <div class = "col-md-4" id ="">
+
+          <select>
+           <option value="<=">greater than equal to </option>
+           <option value=">=">less than equal to</option>
+           <option value=">">greater than</option>
+           <option type="checkbox" value="<">less than</option>
+          </select> 
+
+        </div>
+          
+         <div class = "col-md-4" id =""> 
+              <input type="text" name="" value="">
+         </div>         
+
+      </div>
+
+    </div> 
 
 
-<div id ="Operation">
+</div>
+
+</div>
+
+<!--
+
+-->
+
+
+<div name="cardlist" id="cardlist">
+
+<div style = "margin-left:2%;margin-right: 1%;" class="card" id="card" name="card">
+
+  <div id="rcorners2" style="width:90%;">
+    
+    <div class="row" >
+        
+        <div class = "col-md-2" name ="formid" id ="formid">
+            
+            <select id="formidselect" name ="formidselect" class="form-control">                  
+            </select>
+
+        </div>
+
+        
+
+       <div class = "col-md-5"  name = "Questionid" id ="Questionid">
+            
+            <select id="Questionidselect"  name = "Questionidselect" class="form-control">
+            </select>
+
+        </div>
+
+
+        <div class = "col-md-2" name= "Optionsparam" id ="Optionsparam" >
+
+            <select class="form-control">
+             <option value=""> equal </option>
+             <option value="">not equal </option>
+            <option value="">answered</option>
+             <option value="">not answered</option>
+            </select> 
+
+        </div>
+
+        <div id="Optionidselect" name="Optionidselect" class="col-md-3" style="max-height:100px;overflow: auto;">
+              <ul class="list-group" name ="Optioncheckboxlist" id="Optioncheckboxlist">
+              </ul>
+        </div>
+
+    </div>
+
+
+
+
+
+
+
+<br>
+
+<div id ="Operation" name="Operation">
       <div class="row">
         
         <div class = "col-md-4" id ="">
@@ -339,9 +496,9 @@ function optionlist(){
 
 </div>
 
-<br>
 
 <div style = "margin-left:2%;margin-right: 1%;"> 
+    <br>
     <button >ADD</button>
 <div>
 
