@@ -6,6 +6,10 @@ from django.views.decorators.csrf import csrf_exempt
 from django.http import HttpResponse
 from collections import OrderedDict
 from itertools import chain
+import urllib2
+import json
+from collections import OrderedDict
+from itertools import chain
 
 
 # Create your views here.
@@ -49,112 +53,20 @@ def trav2(node,name):
         return [node]
 
 
-def datalist(formid):
-    urlv = "http://192.168.0.55:8001/api/v1/forms/27/form.json"
-    #urlv = "http://192.168.0.55:8001/api/v1/data/27?format=json"
-    print ("Sending Request to",urlv)
-    kobotoolbox_request = urllib2.Request(urlv)
-    kobotoolbox_request.add_header('Authorization',"OAuth2 a0028f740988d80cbe670f24a9456d655b8dd419")
-    res = urllib2.urlopen(kobotoolbox_request)
-    html = res.read()
-    formdict = json.loads(html)
-    node = []
-    dictarray =[]
-    for dictarrayelement in formdict["children"]:
-        if dictarrayelement['type'] == "group" or dictarrayelement['type']== "select one":
-            node.append(trav2(dictarrayelement,dictarrayelement["name"]))
-    node.pop()
-    questions = []
-    for group in node:
-        for question in group:
-            questiondict = {}
-            try:
-                print "Question"
-                print "####################"
-                print question["label"]
-                print question["name"]
-                print question["group"]
-                questiondict={"value":question["label"],"key":question["group"]}
-                try:
-                    print "Options of Questions"
-                    options = []
-                    for optionskey,optionsvalue in (question["children"]).items():
-                        optiondict ={}
-                        optiondict = {"value":optionsvalue["label"],"key":optionsvalue["name"]}
-                        print (optionsvalue["label"],optionsvalue["name"])
-                        options.append(optiondict)
-                    questiondict["options"] = options
-                except:
-                    pass
-                questions.append(questiondict)
-                print "***********************************"
-            except:
-                pass
-    form = {}
-    form["form"] = questions
-    print form
-    return form
-     
+
 @csrf_exempt
 def questionlist(request):
+    formid = request.POST['id']
+    print "formid\n"
+    print formid
     data = {}
-    data=mn()
+    data=datalist(formid)
     return HttpResponse(json.dumps(data),content_type='application/json')
 
-def dd():
-    urlv = "http://192.168.0.55:8001/api/v1/forms/27/form.json"
-    #urlv = "http://192.168.0.55:8001/api/v1/data/27?format=json"
-    print ("Sending Request to",urlv)
-    kobotoolbox_request = urllib2.Request(urlv)
-    kobotoolbox_request.add_header('Authorization',"OAuth2 a0028f740988d80cbe670f24a9456d655b8dd419")
-    res = urllib2.urlopen(kobotoolbox_request)
-    html = res.read()
-    formdict = json.loads(html)
-    node = []
-    dictarray =[]
-    for dictarrayelement in formdict["children"]:
-        if dictarrayelement['type'] == "group" or dictarrayelement['type']== "select one":
-            node.append(trav2(dictarrayelement,dictarrayelement["name"]))
-    print (node[3])
-    node.pop()
-    print len(node)
-    questions = []
-    for group in node:
-        for question in group:
-            questiondict = {}
-            try:
-                print "Question"
-                print "####################"
-                print question["label"]
-                print question["name"]
-                print question["group"]
-                questiondict={"value":question["label"],"key":question["group"]}
-                try:
-                    print "Options of Questions"
-                    options = []
-                    for optionskey,optionsvalue in (question["children"]).items():
-                        optiondict ={}
-                        optiondict = {"value":optionsvalue["label"],"key":optionsvalue["name"]}
-                        print (optionsvalue["label"],optionsvalue["name"])
-                        options.append(optiondict)
-                    questiondict["options"] = options
-                except:
-                    pass
-                questions.append(questiondict)
-                print "***********************************"
-            except:
-                pass
-    print questions
 
 
 
 
-
-
-import urllib2
-import json
-from collections import OrderedDict
-from itertools import chain
 
 
 def dictdata(data):
@@ -187,7 +99,13 @@ def trav2(node,name):
 def printq(node):
     list(chain.from_iterable([trav(child) for child in node['children']]))
 
-def ll():
+
+
+
+
+
+def datalist(formid):
+    print formid
     urlv = "http://192.168.0.55:8001/api/v1/forms/27/form.json"
     #urlv = "http://192.168.0.55:8001/api/v1/data/27?format=json"
     print ("Sending Request to",urlv)
@@ -231,60 +149,41 @@ def ll():
                 print "***********************************"
             except:
                 pass
-    print questions
-    form = {}
-    form["form"] = questions
-    print json.dumps(form)
-
-
-
-
-
-def mn():
-    urlv = "http://192.168.0.55:8001/api/v1/forms/27/form.json"
-    #urlv = "http://192.168.0.55:8001/api/v1/data/27?format=json"
-    print ("Sending Request to",urlv)
-    kobotoolbox_request = urllib2.Request(urlv)
-    kobotoolbox_request.add_header('Authorization',"OAuth2 a0028f740988d80cbe670f24a9456d655b8dd419")
-    res = urllib2.urlopen(kobotoolbox_request)
-    html = res.read()
-    formdict = json.loads(html)
-    node = []
-    dictarray =[]
-    for dictarrayelement in formdict["children"]:
-        if dictarrayelement['type'] == "group" or dictarrayelement['type']== "select one":
-            node.append(trav2(dictarrayelement,dictarrayelement["name"]))
-            dictarray.append(dictdata(dictarrayelement))
-    print (node[3])
-    node.pop()
-    print len(node)
-    questions = []
-    for group in node:
-        for question in group:
-            questiondict = {}
-            try:
-                print "Question"
-                print "####################"
-                print question["label"]
-                print question["name"]
-                print question["group"]
-                questiondict={"value":question["label"],"key":question["group"]}
-                try:
-                    print "Options of Questions"
-                    options = []
-                    for optionskey,optionsvalue in (question["children"]).items():
-                        optiondict ={}
-                        optiondict = {"value":optionsvalue["label"],"key":optionsvalue["name"]}
-                        print (optionsvalue["label"],optionsvalue["name"])
-                        options.append(optiondict)
-                    questiondict["options"] = options
-                except:
-                    pass
-                questions.append(questiondict)
-                print "***********************************"
-            except:
-                pass
-    print questions
+    #print questions
     form = {}
     form["form"] = questions
     return form
+
+
+
+
+@csrf_exempt
+def optionlist(request):
+    print "I am optionlist"
+    print "request"
+    print request
+    formid = request.POST['formkey']
+    print "formid"
+    print formid    
+    questionname = request.POST['questionname'] 
+    print "questionname"
+    print questionname
+    data = {}
+    data=datalist(formid)
+    print "#########################################"
+    print "########################################"
+    print type(data)
+    print "questionname"
+    print questionname
+    questionlist = data["form"]
+    optionlist = []
+    for i in questionlist:
+        try:
+            if(i["value"]==questionname):
+                print i["options"]
+                optionlist = i["options"]
+        except:
+            pass 
+    print optionlist               
+    return HttpResponse(json.dumps(optionlist),content_type='application/json')
+

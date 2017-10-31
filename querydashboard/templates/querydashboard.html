@@ -37,13 +37,14 @@ $(document).ready(function(){
 
     surveyformlist();
 
-    $("#Questionid").hide();
+    $("[name='Questionid']").hide();
  
-    $("#Optionid").hide();
+    $("[name='Optionid']").hide();
 
-    $("#Optionsparam").hide(); 
+    $("[name='Optionsparam']").hide(); 
 
-    $("#Operation").hide();
+    $("[name='Operation']").hide();
+
 
 
     $("[name='formid']").on('change',function(event)
@@ -52,14 +53,14 @@ $(document).ready(function(){
   
         var target = $(event.target);
         
-        p = target.parent().parent();
+        parentobject = target.parent().parent();
 
     //    console.log(p);
 
  
-        formkey=p.find("[name='formidselect'] option:selected").val();
+        formkey=parentobject.find("[name='formidselect'] option:selected").val();
        
-        questionlist(p,formkey);
+        questionlist(parentobject,formkey);
     });
 
     $("[name='Questionid']").on('change',function(event)
@@ -73,7 +74,7 @@ $(document).ready(function(){
 
         questionname=parentobject.find("[name='Questionidselect'] option:selected").text();
 
-        optionlist(parentobject,questionname);
+        optionlist(parentobject);
     });
 
     $("button").click(function(){
@@ -159,21 +160,24 @@ function questionlist(parentobject,formkey){
 
       quetionlist = parentobject.find("[name='Questionidselect']");
 
-      Operation = parentobject.find("[name='Operation']");
+      Operation = parentobject.siblings().find("[name='Operation']");
 
-      Optionsparam = parentobject.find("[name='Operation']");
+      console.log("Operation");
+      console.log(Operation);
+
+
+      Optionsparam = parentobject.find("[name='Optionsparam']");
 
       console.log(quetionlist);
 
     
-   //   $(quetionlist).hide(); 
+     //$(quetionlist).hide(); 
 
-   //  $(Operation).hide();
+     $(Operation).hide();
 
-   //  $(Optionsparam).hide(); 
+     $(Optionsparam).hide(); 
 
-
-    $(quetionlist).empty();
+     $(quetionlist).empty();
 
     var url = "{% url 'questionlist' %}";
 
@@ -219,11 +223,124 @@ function questionlist(parentobject,formkey){
 
 }
 
-function optionlist(questionname){
+
+function optionlist(parentobject){
+
 
     console.log(questionname);
 
-    $("[name='Optioncheckboxlist']").empty();
+    formkey=parentobject.find("[name='formidselect'] option:selected").val();
+
+    console.log("formkey");
+
+    console.log(formkey);
+
+    questionname = parentobject.find("[name='Questionidselect'] option:selected").text();
+
+    console.log("questionname")
+
+    console.log(questionname);
+
+
+    Optioncheckboxlist = parentobject.find("[name='Optioncheckboxlist']");
+
+    Optiondiv = parentobject.find("[name='Optionidselect']");
+
+    Operation = parentobject.find("[name='Operation']");
+
+    Optionsparam = parentobject.find("[name='Optionsparam']");
+
+
+
+    $(Optioncheckboxlist).empty();
+
+
+    var url = "{% url 'optionlist' %}";
+
+    console.log(url);
+
+    $.ajax({
+
+        url : url,
+
+        data : {formkey:formkey,questionname:questionname},
+
+         type:'POST',
+
+        contenttype : "json",
+
+       
+
+        success : function(json){
+
+          optionslistarray=json;
+
+          if(optionslistarray.length!=0)
+          { 
+
+     
+            for(i = 0; i < optionslistarray.length; i++)
+            {
+
+                      str = "<li class=\"list-group-item\"><input type=\"checkbox\">   " 
+
+                      str = str + optionslistarray[i]["value"] + "</li>"
+
+                      $("[name='Optioncheckboxlist']").append(str);
+  
+            }  
+
+            $(Optionsparam).show();
+            $(Operation).hide();
+            $(Optiondiv).show();
+           } 
+          else{
+            console.log("I am in else block");
+            $(Optionsparam).hide();
+            $(Optiondiv).hide();
+
+            Operation = parentobject.siblings();
+            console.log(Operation);
+            $(Operation).show();
+          }
+
+      },
+
+                 
+      error: function(e){
+              console.log(e);
+
+      },
+
+       
+    
+
+    });
+
+
+}
+
+/*
+function optionlist(parentobject){
+
+    console.log(questionname);
+
+    formkey=parentobject.find("[name='formidselect'] option:selected").val();
+
+    console.log("formkey");
+
+    console.log(formkey);
+
+    questionname = parentobject.find("[name='Questionidselect'] option:selected").text();
+
+    console.log("questionname")
+
+    console.log(questionname);
+
+
+    Optioncheckboxlist = parentobject.find("[name='Optioncheckboxlist']");
+
+    $(Optioncheckboxlist).empty();
 
     //var questionname = $("#Questionidselect option:selected").val();
         
@@ -235,7 +352,7 @@ function optionlist(questionname){
     console.log(optionslistarray.length);
 
 
-    optionslistarray= Questionarray[0]["options"];
+
     try 
     {
         for (i = 0; i < gform.length; i++)
@@ -288,6 +405,7 @@ function optionlist(questionname){
     console.log(optionslistarray);       
 }
 
+*/
 
 </script>
 
@@ -340,9 +458,6 @@ function optionlist(questionname){
 
 
 
-
-
-<br>
 
 <div id ="Operation" name="Operation">
       <div class="row">
@@ -439,12 +554,8 @@ function optionlist(questionname){
     </div>
 
 
-
-
-
-
-
 <br>
+
 
 <div id ="Operation" name="Operation">
       <div class="row">
