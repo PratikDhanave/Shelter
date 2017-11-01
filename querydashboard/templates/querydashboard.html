@@ -117,6 +117,17 @@ $(document).ready(function(){
             console.log(Questionname);
             Questionid  = $(dummy).find("[name='Questionidselect'] option:selected").val();
             console.log(Questionid);
+
+            console.log("Option");
+
+          //  Optionid  = $(dummy).find("[name='Optioncheckboxlist']").val();
+
+           // console.log(Optionid);  
+
+            optionname = $(dummy).find(".list-group-item");
+                
+            console.log(optionname);  
+ 
          } 
 
     }); 
@@ -297,7 +308,7 @@ function optionlist(parentobject){
             for(i = 0; i < optionslistarray.length; i++)
             {
 
-                      str = "<li class=\"list-group-item\"><input type=\"checkbox\">   " 
+                      str = "<li class=\"list-group-item\"><input name=\"checkbox\" type=\"checkbox\">   " 
 
                       str = str + optionslistarray[i]["value"] + "</li>"
 
