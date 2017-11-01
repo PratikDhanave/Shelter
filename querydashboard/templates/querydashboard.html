@@ -86,10 +86,39 @@ $(document).ready(function(){
     $("#Submit").click(function(){
       alert("submit button clicked"); 
       console.log("submit button clicked");
-     cardlist= document.getElementById('cardlist').children;
-      //cardlist=("#cardlist").children();
-      console.log(cardlist[0]);
-      console.log(cardlist);
+      
+      var cardlist = document.getElementById("cardlist");
+    
+      cards=$("[name='card']");
+      
+      var acards = [];
+
+      for(i=0;i<cards.length;i++)
+       {
+           acards.push(cards[i]); 
+       }  
+      
+
+        acards.shift(); 
+
+        console.log(acards);
+
+        for(i=0;i<acards.length;i++)
+         {
+            dummy=acards[i];
+            console.log("dummy");
+            console.log(dummy);
+            formname= $(dummy).find("[name='formidselect'] option:selected").text();
+            console.log(formname);
+            formid= $(dummy).find("[name='formidselect'] option:selected").val();
+            console.log(formid);
+            
+            Questionname = $(dummy).find("[name='Questionidselect'] option:selected").text();
+            console.log(Questionname);
+            Questionid  = $(dummy).find("[name='Questionidselect'] option:selected").val();
+            console.log(Questionid);
+         } 
+
     }); 
 
 
@@ -97,10 +126,6 @@ $(document).ready(function(){
 
 });
 
-
-function emptyall(){
-  
-}
 
 
 function surveyformlist(){
@@ -318,7 +343,7 @@ function optionlist(parentobject){
 
 <body>
 
-<div style = "margin-left:2%;margin-right: 1%;display:none;" class="cardexample" id="cardexample" name="cardexample">
+<div style = "margin-left:2%;margin-right: 1%;display:none;" class="cardexample" id="card" name="card">
 
   <div id="rcorners2" style="width:90%;">
     
