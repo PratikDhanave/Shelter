@@ -124,9 +124,9 @@ $(document).ready(function(){
 
            // console.log(Optionid);  
 
-            optionname = $(dummy).find(".list-group-item");
-                
-            console.log(optionname);  
+            //optionname = $(dummy).find("[name="checkbox"]");
+
+                //input[name="locationthemes"]:checked'console.log(optionname));  
  
          } 
 
@@ -308,11 +308,12 @@ function optionlist(parentobject){
             for(i = 0; i < optionslistarray.length; i++)
             {
 
-                      str = "<li class=\"list-group-item\"><input name=\"checkbox\" type=\"checkbox\">   " 
+     str = "<li class=\"list-group-item\"><input name=\"checkbox\" type=\"checkbox\"  value=\"" + optionslistarray[i]["value"] +"checkbox\">" 
 
-                      str = str + optionslistarray[i]["value"] + "</li>"
 
-                      $(Optioncheckboxlist).append(str);
+              str = str + optionslistarray[i]["value"] + "</li>"
+
+              $(Optioncheckboxlist).append(str);
   
             }  
 
