@@ -85,6 +85,8 @@ $(document).ready(function(){
 
     $("#Submit").click(function(){
 
+      var fdata = [];
+
       alert("submit button clicked"); 
       console.log("submit button clicked");
       
@@ -112,10 +114,6 @@ $(document).ready(function(){
         console.log("length of acards array");
 
         console.log(acards.length);
-
-
-        var fdata = [];
-
 
         for(i=0;i<acards.length;i++)
          {
@@ -191,14 +189,47 @@ $(document).ready(function(){
           gform=fdata;
 
           console.log("fdata");
-          console.log(fdata);
+          //console.log(fdata);
+
+             getdata(fdata);
 
     }); 
 
 
-
-
 });
+
+
+
+function getdata(fdata){
+
+    console.log(fdata);
+
+    fdata = {'hi':'hi'};
+
+    console.log(fdata);
+
+    var url = "{% url 'getformdata' %}";
+
+    console.log(url);
+
+    $.ajax({
+
+        url : url,
+
+        data : {'id':fdata},
+
+        type: "POST",
+
+        contenttype : "json",
+
+        success : function(json){
+
+    
+        }
+
+
+    });
+}
 
 
 

@@ -187,3 +187,15 @@ def optionlist(request):
     print optionlist               
     return HttpResponse(json.dumps(optionlist),content_type='application/json')
 
+
+@csrf_exempt
+def getformdata(request):
+    print "$$$$$$$$$$$$$$$$$$$$$$$$$$$"
+    print request
+    print "printing data"
+    try:
+        print json.loads(request.body)
+    except Exception as e:
+        print e    
+    data = {}
+    return HttpResponse(json.dumps(data),content_type='application/json')
