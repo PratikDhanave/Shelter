@@ -84,12 +84,18 @@ $(document).ready(function(){
 
 
     $("#Submit").click(function(){
+
       alert("submit button clicked"); 
       console.log("submit button clicked");
       
       var cardlist = document.getElementById("cardlist");
     
       cards=$("[name='card']");
+
+      
+      console.log("length of cards after jquery");
+      console.log(cards.length);
+
       
       var acards = [];
 
@@ -103,32 +109,89 @@ $(document).ready(function(){
 
         console.log(acards);
 
+        console.log("length of acards array");
+
+        console.log(acards.length);
+
+
+        var fdata = [];
+
+
         for(i=0;i<acards.length;i++)
          {
-            dummy=acards[i];
-            console.log("dummy");
-            console.log(dummy);
-            formname= $(dummy).find("[name='formidselect'] option:selected").text();
+
+            var q = [];
+
+            console.log("card of ");
+            console.log(i);
+
+            cardtree = acards[i];
+
+            console.log("cardtree of");
+            console.log(i);
+            console.log(cardtree);
+
+            formname= $(cardtree).find("[name='formidselect'] option:selected").text();
+          
+            console.log("formname");
             console.log(formname);
-            formid= $(dummy).find("[name='formidselect'] option:selected").val();
+          
+            formid= $(cardtree).find("[name='formidselect'] option:selected").val();
+
+            console.log("formid");
             console.log(formid);
             
-            Questionname = $(dummy).find("[name='Questionidselect'] option:selected").text();
+            Questionname = $(cardtree).find("[name='Questionidselect'] option:selected").text();
+            
+            console.log("Questionname"); 
             console.log(Questionname);
-            Questionid  = $(dummy).find("[name='Questionidselect'] option:selected").val();
+
+            Questionid  = $(cardtree).find("[name='Questionidselect'] option:selected").val();
+            
+            console.log("Questionid");
             console.log(Questionid);
 
-            console.log("Option");
 
-          //  Optionid  = $(dummy).find("[name='Optioncheckboxlist']").val();
+            console.log("Option list");
+          
 
-           // console.log(Optionid);  
+            optionnames = $(cardtree).find("[name=checkbox]:checked"); 
+          
 
-            //optionname = $(dummy).find("[name="checkbox"]");
+            console.log("length of optionlist");
 
-                //input[name="locationthemes"]:checked'console.log(optionname));  
- 
-         } 
+            op = []
+
+            console.log(optionnames.length);
+           // console.log(optionnames);
+
+              for (j=0;j<optionnames.length;j++)
+              {
+                  op.push(optionnames[j].value);
+                  //console.log(optionnames[j].value);
+              }
+
+              console.log("options of questions");
+
+              console.log(op);
+
+            q.push({
+              key:   Questionid,
+              value: op
+            });
+
+
+            fdata.push({
+              key:   formid,
+              value: q
+            });
+
+          }
+
+          gform=fdata;
+
+          console.log("fdata");
+          console.log(fdata);
 
     }); 
 
@@ -219,7 +282,7 @@ function questionlist(parentobject,formkey){
 
         success : function(json){
 
-                gform=json["form"];  
+                //gform=json["form"];  
 
                 Questionarray=json["form"]; 
 
@@ -308,7 +371,7 @@ function optionlist(parentobject){
             for(i = 0; i < optionslistarray.length; i++)
             {
 
-     str = "<li class=\"list-group-item\"><input name=\"checkbox\" type=\"checkbox\"  value=\"" + optionslistarray[i]["value"] +"checkbox\">" 
+     str = "<li class=\"list-group-item\"><input name=\"checkbox\" type=\"checkbox\"  value=\"" + optionslistarray[i]["value"] +"\">" 
 
 
               str = str + optionslistarray[i]["value"] + "</li>"
