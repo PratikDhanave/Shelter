@@ -106,7 +106,7 @@ def printq(node):
 
 def datalist(formid):
     print formid
-    urlv = "http://192.168.43.248:8001/api/v1/forms/27/form.json"
+    urlv = "http://192.168.0.94:8001/api/v1/forms/27/form.json"
     #urlv = "http://192.168.0.55:8001/api/v1/data/27?format=json"
     print ("Sending Request to",urlv)
     kobotoolbox_request = urllib2.Request(urlv)
@@ -191,11 +191,23 @@ def optionlist(request):
 @csrf_exempt
 def getformdata(request):
     print "$$$$$$$$$$$$$$$$$$$$$$$$$$$"
-    print request
-    print "printing data"
+    data = []
     try:
-        print json.loads(request.body)
+        #print request.POST['data']
+        data = json.loads(request.POST['data'])
+        print type(data)
+        #print json.loads(request.POST['data'])['1']
     except Exception as e:
-        print e    
-    data = {}
+        print e
+    retrivedata(data)           
     return HttpResponse(json.dumps(data),content_type='application/json')
+
+
+
+def retrivedata(data):
+    print "printing data"       
+    for i in data:
+        print i['formid']
+        print i['Question'][0]['Options']
+        print i['Question'][0]['Questionid']
+    return None

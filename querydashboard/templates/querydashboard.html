@@ -174,14 +174,14 @@ $(document).ready(function(){
               console.log(op);
 
             q.push({
-              key:   Questionid,
-              value: op
+              Questionid :   Questionid,
+              Options  :    op
             });
 
 
             fdata.push({
-              key:   formid,
-              value: q
+              formid :    formid,
+              Question  :    q
             });
 
           }
@@ -204,9 +204,10 @@ function getdata(fdata){
 
     console.log(fdata);
 
-    fdata = {'hi':'hi'};
+    var data;
+    data = 'hello';
 
-    console.log(fdata);
+    console.log(data);
 
     var url = "{% url 'getformdata' %}";
 
@@ -216,7 +217,7 @@ function getdata(fdata){
 
         url : url,
 
-        data : {'id':fdata},
+        data : {'data':JSON.stringify(fdata)},
 
         type: "POST",
 
