@@ -208,6 +208,14 @@ def retrivedata(data):
     print "printing data"       
     for i in data:
         print i['formid']
-        print i['Question'][0]['Options']
         print i['Question'][0]['Questionid']
+        print i['Question'][0]['Options']        
+    urlv = "http://192.168.0.105:8001/api/v1/data/27?query={"Type_of_structure_occupancy": "01"}" 
+    print ("Sending Request to",urlv)
+    kobotoolbox_request = urllib2.Request(urlv)
+    kobotoolbox_request.add_header('Authorization',"OAuth2 c213f2e7a3221171e8dd501f0fd8153ad95ecd93")
+    res = urllib2.urlopen(kobotoolbox_request)
+    html = res.read()
+    formdatadict = json.loads(html)
+    print len(formdatadict)  
     return None
