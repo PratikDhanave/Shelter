@@ -406,7 +406,7 @@ function optionlist(parentobject){
      str = "<li class=\"list-group-item\"><input name=\"checkbox\" type=\"checkbox\"  value=\"" + optionslistarray[i]["value"] +"\">" 
 
 
-              str = str + optionslistarray[i]["value"] + "</li>"
+              str = str + optionslistarray[i]["key"] + "</li>"
 
               $(Optioncheckboxlist).append(str);
   
@@ -475,11 +475,12 @@ function optionlist(parentobject){
 
         <div class = "col-md-2" name= "Optionsparam" id ="Optionsparam" >
 
-            <select class="form-control">
+            <select class="form-control" name="Optionsparamlist">
              <option value=""> equal </option>
              <option value="">not equal </option>
             <option value="">answered</option>
              <option value="">not answered</option>
+             <option value="<">equal to</option>
             </select> 
 
         </div>
@@ -506,12 +507,13 @@ function optionlist(parentobject){
            <option value=">=">less than equal to</option>
            <option value=">">greater than</option>
            <option value="<">less than</option>
+            <option value="<">equal to</option>
           </select> 
 
         </div>
           
          <div class = "col-md-4" id =""> 
-              <input type="text" name="" value="">
+              <input type="text" name="fromtext" value="">
          </div>         
 
       </div>  
@@ -526,13 +528,14 @@ function optionlist(parentobject){
            <option value="<=">greater than equal to </option>
            <option value=">=">less than equal to</option>
            <option value=">">greater than</option>
-           <option type="checkbox" value="<">less than</option>
+           <option value="<">less than</option>
+           <option value="<">equal to</option>
           </select> 
 
         </div>
           
          <div class = "col-md-4" id =""> 
-              <input type="text" name="" value="">
+              <input type="text" name="totext" value="">
          </div>         
 
       </div>
@@ -576,11 +579,12 @@ function optionlist(parentobject){
 
         <div class = "col-md-2" name= "Optionsparam" id ="Optionsparam" >
 
-            <select class="form-control">
+            <select class="form-control" name="Optionsparamlist">
              <option value=""> equal </option>
              <option value="">not equal </option>
             <option value="">answered</option>
              <option value="">not answered</option>
+             <option value="<">equal to</option>
             </select> 
 
         </div>
@@ -601,17 +605,18 @@ function optionlist(parentobject){
         
         <div class = "col-md-4" id ="">
 
-          <select>
+          <select id="fromtextselectlist">
            <option value="<=">greater than equal to </option>
            <option value=">=">less than equal to</option>
            <option value=">">greater than</option>
            <option value="<">less than</option>
+           <option value="<">equal to</option>
           </select> 
 
         </div>
           
          <div class = "col-md-4" id =""> 
-              <input type="text" name="" value="">
+              <input type="text" name="fromtext" value="">
          </div>         
 
       </div>  
@@ -622,17 +627,18 @@ function optionlist(parentobject){
         
         <div class = "col-md-4" id ="">
 
-          <select>
+          <select name="totextselectlist">
            <option value="<=">greater than equal to </option>
            <option value=">=">less than equal to</option>
            <option value=">">greater than</option>
-           <option type="checkbox" value="<">less than</option>
+           <option  value="<">less than</option>
+           <option value="<">equal to</option>
           </select> 
 
         </div>
           
          <div class = "col-md-4" id =""> 
-              <input type="text" name="" value="">
+              <input type="text" name="totext" value="">
          </div>         
 
       </div>

@@ -6,10 +6,6 @@ from django.views.decorators.csrf import csrf_exempt
 from django.http import HttpResponse
 from collections import OrderedDict
 from itertools import chain
-import urllib2
-import json
-from collections import OrderedDict
-from itertools import chain
 
 
 # Create your views here.
@@ -205,12 +201,31 @@ def getformdata(request):
 
 
 def retrivedata(data):
-    print "printing data"       
+    print "printing data"
+    formid = 0
+    urlstring = "{"
     for i in data:
-        print i['formid']
-        print i['Question'][0]['Questionid']
-        print i['Question'][0]['Options']        
-    urlv = "http://192.168.0.105:8001/api/v1/data/27?query={"Type_of_structure_occupancy": "01"}" 
+        Optionslist = []
+        i['formid'] =  formid
+        print ("formid",i['formid'])
+        print ("Questionname",i['Question'][0]['Questionid'])
+        print ("i['Question'][0]['Options']",i['Question'][0]['Options'])
+        print len(Optionslist)
+        Optionslist = i['Question'][0]['Options'] 
+        print len(Optionslist) 
+        print Optionslist      
+        if len(Optionslist) > 0:
+            print "Optionslist length is greater than 0"
+            for optionname in Optionslist:
+                print ("j",optionname)
+                urlstring += '"' + i['Question'][0]['Questionid'] +'"'+ ":" + '"'+ optionname + '"' + "," 
+    print urlstring
+    urlstring = urlstring[:-1]
+    print urlstring
+    urlstring = urlstring + "}"
+    formid = 27
+    urlv = "http://192.168.0.105:8001/api/v1/data/" + str(formid) + "?query=" +  urlstring         
+    #urlv = "http://192.168.0.105:8001/api/v1/data/27?query={"Type_of_structure_occupancy": "01","group_ce0hf58/Selct_city":"3789"}" 
     print ("Sending Request to",urlv)
     kobotoolbox_request = urllib2.Request(urlv)
     kobotoolbox_request.add_header('Authorization',"OAuth2 c213f2e7a3221171e8dd501f0fd8153ad95ecd93")
