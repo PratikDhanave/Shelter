@@ -195,8 +195,8 @@ def getformdata(request):
         #print json.loads(request.POST['data'])['1']
     except Exception as e:
         print e
-    retrivedata(data)           
-    return HttpResponse(json.dumps(data),content_type='application/json')
+    fdata=retrivedata(data)           
+    return HttpResponse(json.dumps(fdata),content_type='application/json')
 
 
 
@@ -233,4 +233,4 @@ def retrivedata(data):
     html = res.read()
     formdatadict = json.loads(html)
     print len(formdatadict)  
-    return None
+    return formdatadict
