@@ -206,9 +206,13 @@ def retrivedata(data):
     urlstring = "{"
     for i in data:
         Optionslist = []
+        filterlists = []
         i['formid'] =  formid
         print ("formid",i['formid'])
         print ("Questionname",i['Question'][0]['Questionid'])
+        print ("filterlists")
+        print i["filterlists"]
+        filterlists = i["filterlists"]
         print ("i['Question'][0]['Options']",i['Question'][0]['Options'])
         print len(Optionslist)
         Optionslist = i['Question'][0]['Options'] 
