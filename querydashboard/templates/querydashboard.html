@@ -563,14 +563,16 @@ function optionlist(parentobject){
 
 <div id="Querybuilder" name ="Querybuilder">
 
-  <div class="row" >
   
-    <div class = "col">
+<!-- start of row  -->
 
-      <button  style = "margin-left:2%;margin-right: 1%;"type="button" class="btn btn-info" data-toggle="collapse" data-target="#Questions">Questions</button>
+  <div class="row" >
+
+    <button  style = "margin-left:2%;margin-right: 1%;"type="button" class="btn btn-info" data-toggle="collapse" data-target="#Questions">Questions</button>
 
       <!-- start of Questions  -->
-
+  <br>
+  <br>
 <div id="Questions" name="Questions">
   
 <div name="cardlist" id="cardlist">
@@ -672,11 +674,11 @@ function optionlist(parentobject){
 </div>
 
 </div>
+    
+    <br>
+   <div style = "margin-left:2%;margin-right: 1%;" class = "col-md-6" id ="">
 
-
-   <div class = "col-md-6" id ="">
-
-          <button id="Add">ADD</button>
+          <button class="btn btn-info" id="Add">ADD</button>
 
         </div> 
 
@@ -688,15 +690,29 @@ function optionlist(parentobject){
 
 
     </div>
-    
-  <div class = "col">
 
-    <button style = "margin-left:2%;margin-right: 1%;" type="button" class="btn btn-info" data-toggle="collapse" data-target="#answers">answers</button>
+
+  <br>
+  <br>
+    <!-- end of row  -->
+    
+    <!-- start of row  -->
+
+
+  <div style = "margin-left:2%;margin-right: 1%;" class="row" >
   
-     <!-- start of answers  -->
+    <button  type="button" class="btn btn-info" data-toggle="collapse" data-target="#answers">answers</button>
+  
+<!-- start of answers  -->
 
 <div id="answers" name="answers">
-  answers
+
+    <div id="Optionidselect" name="Optionidselect" class="col-md-3" style="max-height:100px;overflow: auto;">
+              <ul class="list-group" name ="Optioncheckboxlist" id="Optioncheckboxlist">
+              </ul>
+        </div>
+
+
 
 </div>
 
@@ -706,9 +722,9 @@ function optionlist(parentobject){
 
   </div>
   
-</div>  
+ 
 
-<!-- end of Querybuilder  -->
+<!-- end of row  -->
 
 
  
@@ -735,7 +751,7 @@ function optionlist(parentobject){
                         
         <div class = "col-md-6" id ="">
 
-            <button id="Submit" name="Submit">Submit</button>
+            <button class="btn btn-info" id="Submit" name="Submit">Submit</button>
 
         </div> 
          

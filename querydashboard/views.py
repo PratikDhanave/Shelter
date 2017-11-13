@@ -106,7 +106,7 @@ def datalist(formid):
     #urlv = "http://192.168.0.55:8001/api/v1/data/27?format=json"
     print ("Sending Request to",urlv)
     kobotoolbox_request = urllib2.Request(urlv)
-    kobotoolbox_request.add_header('Authorization',"OAuth2 c213f2e7a3221171e8dd501f0fd8153ad95ecd93")
+    kobotoolbox_request.add_header('Authorization',"OAuth2 a0028f740988d80cbe670f24a9456d655b8dd419")
     res = urllib2.urlopen(kobotoolbox_request)
     html = res.read()
     formdict = json.loads(html)
@@ -228,7 +228,7 @@ def retrivedata(data):
     #urlv = "http://192.168.0.105:8001/api/v1/data/27?query={"Type_of_structure_occupancy": "01","group_ce0hf58/Selct_city":"3789"}" 
     print ("Sending Request to",urlv)
     kobotoolbox_request = urllib2.Request(urlv)
-    kobotoolbox_request.add_header('Authorization',"OAuth2 c213f2e7a3221171e8dd501f0fd8153ad95ecd93")
+    kobotoolbox_request.add_header('Authorization',"OAuth2 a0028f740988d80cbe670f24a9456d655b8dd419")
     res = urllib2.urlopen(kobotoolbox_request)
     html = res.read()
     formdatadict = json.loads(html)
