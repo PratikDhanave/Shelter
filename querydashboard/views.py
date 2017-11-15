@@ -209,27 +209,16 @@ def retrivedata(data):
         Optionslist = []
         filterlists = []
         i['formid'] =  formid
-        print ("formid",i['formid'])
-        print ("Questionname",i['Question'][0]['Questionid'])
-        print ("filterlists")
-        print i["filterlists"]
         filterlists = i["filterlists"]  
-        print ("i['Question'][0]['Options']",i['Question'][0]['Options'])
-        print len(Optionslist)
         Optionslist = i['Question'][0]['Options'] 
-        print len(Optionslist) 
-        print Optionslist      
         if len(Optionslist) > 0:
             print "Optionslist length is greater than 0"
             for optionname in Optionslist:
-                print ("j",optionname)
                 urlstring += '"' + i['Question'][0]['Questionid'] +'"'+ ":" + '"'+ optionname + '"' + "," 
         if len(filterlists) > 0:
-            print "filterlists length is greater than 0"
             for filterlist in filterlists: 
-                print filterlist
-                filterliststring += '"' + filterlist + '"' +',' 
-                print filterliststring 
+                filterliststring += '"' + filterlist + '"' +','         
+    print "I am here too"                     
     print "I am here"                          
     print "urlstring"
     urlstring = urlstring[:-1]
