@@ -240,4 +240,5 @@ def retrivedata(data):
     html = res.read()
     formdatadict = json.loads(html)
     print len(formdatadict)  
+    print formdatadict
     return formdatadict

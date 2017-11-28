@@ -38,8 +38,14 @@
 
 var gform;
 
+ var arr = [];
 
-var testdata2=[{ "group_ye18c77/group_ud4em45/adhar_card_number": "537932621462", "_id": "14965", "group_ye18c77/group_ud4em45/mobile_number": "9762442898" }];
+var testdata2=[
+  
+  {"group_ye18c77/group_ud4em45/adhar_card_number": "537932621462", "_id": "14965", "group_ye18c77/group_ud4em45/mobile_number": "9762442898" },
+  
+  {"group_ye18c77/group_ud4em45/adhar_card_number": "537932621462", "_id": "14965", "group_ye18c77/group_ud4em45/mobile_number": "9762442898" }
+  ];
 
 
 /*
@@ -48,38 +54,9 @@ var testdata2=[{ "group_ye18c77/group_ud4em45/adhar_card_number": "537932621462"
 { "group_ye18c77/group_ud4em45/adhar_card_number": "537932621462", "_id": "14965", "group_ye18c77/group_ud4em45/mobile_number" : "9762442898" }];
 */
 
-var testdata = [{
-    "id": "58",
-    "country_code": "UK",
-    "title": "Legal Director",
-    "pubdate": "2012-03-08 00:00:00",
-    "url": "http://..."
-}, {
-    "id": "59",
-    "country_code": "UK",
-    "title": "Solutions Architect,",
-    "pubdate": "2012-02-23 00:00:00",
-    "url": "http://..."
-}];
 
 
 $(document).ready(function(){
-
-$('#test').dataTable({
-
-    "aaData": testdata,
-        "aoColumns": [{
-        "mDataProp": "id"
-    }, {
-        "mDataProp": "country_code"
-    }, {
-        "mDataProp": "title"
-    }, {
-        "mDataProp": "pubdate"
-    }, {
-        "mDataProp": "url"
-    }]
-});
 
 
     surveyformlist();
@@ -284,19 +261,8 @@ function tb(){
 
         "aaData": testdata2,
         
-        "aoColumns": [{
-        "mDataProp": "group_ye18c77/group_ud4em45/adhar_card_number"
-        
-        }
-        ,{
-        
-          "mDataProp": "_id"
-        
-        },
-         {
-        "mDataProp": "group_ye18c77/group_ud4em45/mobile_number"
-        }
-        ]
+        "aoColumns": arr,
+
       });
 
 }
@@ -330,9 +296,23 @@ function getdata(fdata){
            // gform=json;
             alert("I am here");
             alert(json);
-            console.log(json);
-           testdata2 = json;
-    
+            testdata2 = json;
+            console.log(testdata2);
+
+            keyelemet=Object.keys(testdata2[0]);
+            
+            console.log("keyelemet");
+
+
+            for(i=0;i<keyelemet.length;i++)
+            { 
+            
+              var dis = { "mDataProp": keyelemet[i]};
+               arr.push(dis);
+            }
+
+            console.log(arr);
+
         }
 
 
@@ -899,13 +879,7 @@ function optionlist(parentobject){
     <button   id="data" type="button" class="btn btn-info" data-toggle="collapse" data-target="#data">Data</button>
   
 
-  <div name="data">
-
-        <table id="test"></table>
-        
-  </div>
-
-<div>
+ <div>
 test2
 <table id="test2">
         
