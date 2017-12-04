@@ -38,14 +38,9 @@
 
 var gform;
 
- var arr = [];
+var arr = [];
 
-var testdata2=[
-  
-  {"group_ye18c77/group_ud4em45/adhar_card_number": "537932621462", "_id": "14965", "group_ye18c77/group_ud4em45/mobile_number": "9762442898" },
-  
-  {"group_ye18c77/group_ud4em45/adhar_card_number": "537932621462", "_id": "14965", "group_ye18c77/group_ud4em45/mobile_number": "9762442898" }
-  ];
+var testdata2=[];
 
 
 /*
@@ -299,22 +294,35 @@ function getdata(fdata){
             testdata2 = json;
             console.log(testdata2);
 
-            keyelemet=Object.keys(testdata2[0]);
-            
-            console.log("keyelemet");
+            var keyelement=Object.keys(testdata2[0]);
 
+            for(i=0;i<keyelement.length;i++)
+            {
+  
+/*
+               dummy = keyelement[i].split("/"); 
+               
+               console.log(dummy);
+                console.log(dummy.slice(-1).pop());
+       */ 
+              var dis = { 
 
-            for(i=0;i<keyelemet.length;i++)
-            { 
-            
-              var dis = { "mDataProp": keyelemet[i]};
+                        "mDataProp": keyelement[i]//dummy.slice(-1).pop()
+                        ,"sName": keyelement[i] //dummy.slice(-1).pop()
+                        };
+
+               console.log(dis);
+               console.log(dis);
+                        
                arr.push(dis);
             }
+
+
 
             console.log(arr);
 
         }
-
+    
 
     });
 }
@@ -821,11 +829,25 @@ function optionlist(parentobject){
 
     <div class="row">
 
-      <div id="filteridselect" name="filtersidselect" class="col-md-3" style="max-height:200px;overflow: auto;">
-          <ul class="list-group" name ="filtercheckboxlist" id="filterscheckboxlist">
+      <div class="col">
 
-          </ul>
+        <div id="filteridselect" name="filtersidselect" class="col-md-3" style="max-height:200px;overflow: auto;">
+            <ul class="list-group" name ="filtercheckboxlist" id="filterscheckboxlist">
+
+            </ul>
+        </div>
+
+     </div>
+
+      <div class="col">
+            <div id="filteridselect" name="filtersidselect" class="col-md-3" style="max-height:200px;overflow: auto;">
+            <ul class="list-group" name ="filtercheckboxlist" id="filterscheckboxlist">
+
+            </ul>
+        </div>            
+
       </div>
+
 
     </div>
 
@@ -880,7 +902,6 @@ function optionlist(parentobject){
   
 
  <div>
-test2
 <table id="test2">
         
         </table>

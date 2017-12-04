@@ -195,7 +195,9 @@ def getformdata(request):
         #print json.loads(request.POST['data'])['1']
     except Exception as e:
         print e
-    fdata=retrivedata(data)           
+    fdata=retrivedata(data) 
+    print"fdata\n" 
+    print fdata          
     return HttpResponse(json.dumps(fdata),content_type='application/json')
 
 
@@ -207,7 +209,8 @@ def retrivedata(data):
     filterliststring = "&fields=["
     for i in data:
         Optionslist = []
-        filterlists = []
+        filterlists = [
+        ]
         i['formid'] =  formid
         filterlists = i["filterlists"]  
         Optionslist = i['Question'][0]['Options'] 
