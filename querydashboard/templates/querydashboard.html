@@ -29,7 +29,15 @@
     padding: 20px;
     width:auto;
   }
+
+  #filterbox
+  {
+    width  : 600px;
+    height : 300px;
+    border : 2px solid black;
+  }
 </style>
+
 
 
 <script>
@@ -105,6 +113,12 @@ $(document).ready(function(){
     $("#filter").click(function(){         
           fillfilterlist();
     });
+
+
+   $("#addfilter").click(function(){
+        alert("addfilter");      
+    });
+
 
          
         
@@ -829,38 +843,50 @@ function optionlist(parentobject){
 
     <div class="row">
 
-      <div class="col">
+      <div class="col-md-3">
 
-        <div id="filteridselect" name="filtersidselect" class="col-md-3" style="max-height:200px;overflow: auto;">
-            <ul class="list-group" name ="filtercheckboxlist" id="filterscheckboxlist">
+        <div name = "Quest" id ="Quest">
+            
+            <select id="Quest"  name = "Quest" class="form-control">
+               <option value="volvo">Volvo</option>
+  <option value="saab">Saab</option>
+  <option value="mercedes">Mercedes</option>
+  <option value="audi">Audi</option>
+            </select>
 
-            </ul>
         </div>
 
      </div>
 
-      <div class="col">
-        
-            <div id="filteridselect" name="filtersidselect" class="col-md-3" style="max-
-            height:200px;overflow: auto;">
-            <ul class="list-group" name ="filtercheckboxlist" id="filterscheckboxlist">
+     
+      <div class="col-md-3">
+
+        <div id="Optionidselect" name="Optionidselect" class="col-md-3" style="max-height:100px;width:400px;overflow: auto;">
+            <ul class="list-group" name ="Optioncheckboxlist" id="Optioncheckboxlist">
+                <li class="list-group-item">Cras justo odio</li>
+  <li class="list-group-item">Dapibus ac facilisis in</li>
+  <li class="list-group-item">Morbi leo risus</li>
+  <li class="list-group-item">Porta ac consectetur ac</li>
+  <li class="list-group-item">Vestibulum at eros</li>
 
             </ul>
-        </div>            
-
-      </div>
-
-      <div class="col">
-
-          <div class = "col-md-5"  name = "Questionid" id ="Questionid">
-            
-            <select id="Questionidselect"  name = "Questionidselect" class="form-control">
-            </select>
-
-          </div>
-
+        </div>
       
       </div>
+
+
+    <div class="col-md-1">
+
+        <button   id="addfilter" name="addfilter" type="button" class="btn btn-info" data-toggle="collapse">add</button>
+       
+    </div> 
+
+
+    <div class="col-md-4">
+
+        <div id="filterbox">
+        </div>
+      </div> 
 
     </div>
 
