@@ -50,15 +50,6 @@ var arr = [];
 
 var testdata2=[];
 
-
-/*
-var testdata2=[{ "group_ye18c77/group_ud4em45/adhar_card_number": "537932621462", "_id": "14965", "group_ye18c77/group_ud4em45/mobile_number": "9762442898" },
-
-{ "group_ye18c77/group_ud4em45/adhar_card_number": "537932621462", "_id": "14965", "group_ye18c77/group_ud4em45/mobile_number" : "9762442898" }];
-*/
-
-
-
 $(document).ready(function(){
 
 
@@ -95,7 +86,7 @@ $(document).ready(function(){
 
        // $("[name='Optionid']").hide(); 
 
-         var target = $(event.target);
+        var target = $(event.target);
         
         parentobject = target.parent().parent();
 
@@ -111,13 +102,50 @@ $(document).ready(function(){
 
 
     $("#filter").click(function(){         
-          fillfilterlist();
+          fillfilterquestionlist();
     });
 
+ 
+   $("#filterquestionlist").on('change',function(event)
+    {
+       filteroptionlist();
+    });
 
    $("#addfilter").click(function(){
+
+        var filterstring =" ";
+
         alert("addfilter");      
+
+        filterquestion = $("[name='filterquestionlist'] option:selected").text();
+
+        console.log(filterquestion);
+
+        filterstring = filterstring.concat(filterquestion);
+
+         filterstring = filterstring.concat(" : ");
+
+        console.log(filterstring);
+
+
+        filteroptionscheckboxlist = $("[name='filterOptioncheckboxlist'] :checked");
+ 
+        for(i=0;i<filteroptionscheckboxlist.length;i++)
+         {
+
+            filterstring = filterstring.concat($(filteroptionscheckboxlist[i]).attr('text'));
+            filterstring = filterstring.concat(", ");
+         } 
+
+         console.log("filterstring");
+         console.log(filterstring);
+
+           var filterstringtoappend =  "<div>" +  filterstring + "</div><br>"
+
+         $("#filterQ").append(filterstringtoappend);
+
     });
+
 
 
          
@@ -455,7 +483,7 @@ function questionlist(parentobject,formkey){
 
 
 
-
+/*
 function fillfilterlist() {
   
     if(gform.length!=0)
@@ -477,6 +505,34 @@ function fillfilterlist() {
     } 
 
 }
+*/
+
+
+function fillfilterquestionlist() {
+   
+      Questionarray=gform; 
+
+      if(Questionarray.length!=0)                 
+      {  
+          var str='<option value="';
+             
+          str = str +"0" +'"'+'>' + "---select---" + '</option>';
+          
+          $("#filterquestionlist").append(str);
+
+          for (i = 0; i < Questionarray.length; i++)
+          {
+              var str='<option value="';
+              str = str + Questionarray[i]["key"] +'"'+'>' + Questionarray[i]["value"] + '</option>';
+              $("#filterquestionlist").append(str);
+  
+          }  
+                  
+      } 
+
+}
+
+
 
 
 function optionlist(parentobject){
@@ -576,6 +632,86 @@ function optionlist(parentobject){
 
 
 }
+
+
+
+
+
+
+function filteroptionlist(){
+
+    formkey=$("[name='formidselect'] option:selected").val();
+
+    console.log("formkey");
+
+    console.log(formkey);
+
+    questionname = $("[name='filterquestionlist'] option:selected").text();
+
+    console.log("questionname")
+
+    console.log(questionname);
+
+
+   // Optioncheckboxlist = parentobject.find();
+
+   // Optiondiv = parentobject.find("[name='Optionidselect']");
+
+   // Operation = parentobject.find("[name='Operation']");
+
+ //    Optionsparam = parentobject.find("[name='Optionsparam']");
+
+
+
+    $("[name='filterOptioncheckboxlist']").empty();
+
+
+    var url = "{% url 'optionlist' %}";
+
+    console.log(url);
+
+    $.ajax({
+
+        url : url,
+
+        data : {formkey:formkey,questionname:questionname},
+
+         type:'POST',
+
+        contenttype : "json",
+
+       
+
+        success : function(json){
+
+          optionslistarray=json;
+
+          if(optionslistarray.length!=0)
+          { 
+
+     
+            for(i = 0; i < optionslistarray.length; i++)
+            {
+
+     str = "<li class=\"list-group-item\"> <input name=\"checkbox\" type=\"checkbox\" text=\"" +  optionslistarray[i]["value"] + "\" value=\"" + optionslistarray[i]["key"] + "\">" 
+
+
+              str = str + optionslistarray[i]["value"] + "</li>"
+
+              $("[name='filterOptioncheckboxlist']").append(str);
+  
+            }  
+
+          }
+
+      }    
+    });
+
+}
+
+
+
+
 
 
 </script>
@@ -845,13 +981,9 @@ function optionlist(parentobject){
 
       <div class="col-md-3">
 
-        <div name = "Quest" id ="Quest">
+        <div name = "filter" id ="Quest">
             
-            <select id="Quest"  name = "Quest" class="form-control">
-               <option value="volvo">Volvo</option>
-  <option value="saab">Saab</option>
-  <option value="mercedes">Mercedes</option>
-  <option value="audi">Audi</option>
+           <select id="filterquestionlist"  name ="filterquestionlist" class="form-control">
             </select>
 
         </div>
@@ -862,13 +994,8 @@ function optionlist(parentobject){
       <div class="col-md-3">
 
         <div id="Optionidselect" name="Optionidselect" class="col-md-3" style="max-height:100px;width:400px;overflow: auto;">
-            <ul class="list-group" name ="Optioncheckboxlist" id="Optioncheckboxlist">
-                <li class="list-group-item">Cras justo odio</li>
-  <li class="list-group-item">Dapibus ac facilisis in</li>
-  <li class="list-group-item">Morbi leo risus</li>
-  <li class="list-group-item">Porta ac consectetur ac</li>
-  <li class="list-group-item">Vestibulum at eros</li>
-
+          <ul class="list-group" name="filterOptioncheckboxlist" id="filterOptioncheckboxlist">
+    
             </ul>
         </div>
       
@@ -883,10 +1010,11 @@ function optionlist(parentobject){
 
 
     <div class="col-md-4">
-
         <div id="filterbox">
+          <div id="filterQ" style = "margin-left:2%;margin-top: 1%;">
+          </div>  
         </div>
-      </div> 
+    </div> 
 
     </div>
 
