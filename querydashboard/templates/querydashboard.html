@@ -50,6 +50,8 @@ var arr = [];
 
 var testdata2=[];
 
+var filterjson = [];
+
 $(document).ready(function(){
 
 
@@ -117,23 +119,32 @@ $(document).ready(function(){
 
         alert("addfilter");      
 
+        var filterquestion = "";
+        
         filterquestion = $("[name='filterquestionlist'] option:selected").text();
 
         console.log(filterquestion);
 
         filterstring = filterstring.concat(filterquestion);
 
-         filterstring = filterstring.concat(" : ");
+        filterstring = filterstring.concat(" : ");
 
         console.log(filterstring);
 
 
         filteroptionscheckboxlist = $("[name='filterOptioncheckboxlist'] :checked");
+
+        var filteroptions = [];
  
         for(i=0;i<filteroptionscheckboxlist.length;i++)
          {
 
-            filterstring = filterstring.concat($(filteroptionscheckboxlist[i]).attr('text'));
+
+            var filteroption = $(filteroptionscheckboxlist[i]).attr('text')
+
+            filteroptions.push(filteroption); 
+
+            filterstring = filterstring.concat(filteroption);
             filterstring = filterstring.concat(", ");
          } 
 
@@ -143,6 +154,22 @@ $(document).ready(function(){
            var filterstringtoappend =  "<div>" +  filterstring + "</div><br>"
 
          $("#filterQ").append(filterstringtoappend);
+
+
+         question = filterquestion;
+
+         var filter = {                    
+        }; 
+
+        filter[question] = filteroptions;
+
+        filterjson.push(filter);
+
+        console.log("filterjson");
+
+        console.log(filterjson);
+
+
 
     });
 

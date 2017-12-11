@@ -148,6 +148,7 @@ def datalist(formid):
     #print questions
     form = {}
     form["form"] = questions
+    print form
     return form
 
 
