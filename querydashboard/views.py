@@ -102,7 +102,7 @@ def printq(node):
 
 def datalist(formid):
     print formid
-    urlv = "http://192.168.0.105:8001/api/v1/forms/27/form.json"
+    urlv = "http://192.168.2.6:8001/api/v1/forms/27/form.json"
     #urlv = "http://192.168.0.55:8001/api/v1/data/27?format=json"
     print ("Sending Request to",urlv)
     kobotoolbox_request = urllib2.Request(urlv)
@@ -213,15 +213,19 @@ def retrivedata(data):
         filterlists = [
         ]
         i['formid'] =  formid
-        filterlists = i["filterlists"]  
+        filterlists = i["filterlists"]
+        print "filterlists"
+        print "filterlists"
+        print filterlists  
         Optionslist = i['Question'][0]['Options'] 
         if len(Optionslist) > 0:
             print "Optionslist length is greater than 0"
             for optionname in Optionslist:
                 urlstring += '"' + i['Question'][0]['Questionid'] +'"'+ ":" + '"'+ optionname + '"' + "," 
-        if len(filterlists) > 0:
-            for filterlist in filterlists: 
-                filterliststring += '"' + filterlist + '"' +','         
+        if len(filterlists) > 0:            
+            for filterlist in filterlists:
+                for key, value in filterlist.iteritems(): 
+                    filterliststring += '"' + key + '"' +','         
     print "I am here too"                     
     print "I am here"                          
     print "urlstring"
@@ -229,13 +233,16 @@ def retrivedata(data):
     print urlstring
     urlstring = urlstring + "}"
     print filterliststring
+    defaultfilterliststring = ["group_ce0hf58/Selct_city","group_ce0hf58/house_no","group_ye18c77/group_ud4em45/adhar_card_number"]
+    for i in defaultfilterliststring:
+        filterliststring = filterliststring + '"' + i + '"' + "," 
     filterliststring = filterliststring[:-1]
     print filterliststring
     filterliststring = filterliststring + "]"
     print "filterliststring"
     print filterliststring
     formid = 27
-    urlv = "http://192.168.0.105:8001/api/v1/data/" + str(formid) + "?query=" +  urlstring + filterliststring         
+    urlv = "http://192.168.2.6:8001/api/v1/data/" + str(formid) + "?query=" +  urlstring + filterliststring         
     #urlv = "http://192.168.0.105:8001/api/v1/data/27?query={"Type_of_structure_occupancy": "01","group_ce0hf58/Selct_city":"3789"}" 
     print ("Sending Request to",urlv)
     kobotoolbox_request = urllib2.Request(urlv)

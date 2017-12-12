@@ -52,8 +52,9 @@ var testdata2=[];
 
 var filterjson = [];
 
-$(document).ready(function(){
+var ch; 
 
+$(document).ready(function(){
 
     surveyformlist();
 
@@ -123,6 +124,8 @@ $(document).ready(function(){
         
         filterquestion = $("[name='filterquestionlist'] option:selected").text();
 
+        var filterquestionval = $("[name='filterquestionlist'] option:selected").val();
+
         console.log(filterquestion);
 
         filterstring = filterstring.concat(filterquestion);
@@ -156,7 +159,7 @@ $(document).ready(function(){
          $("#filterQ").append(filterstringtoappend);
 
 
-         question = filterquestion;
+         question = filterquestionval;
 
          var filter = {                    
         }; 
@@ -178,8 +181,16 @@ $(document).ready(function(){
          
         
     $("#data").click(function(){  
-          alert("clicked on data");       
-          tb();
+      
+      alert("clicked on data");       
+      tb();
+        
+        var table = $('#test2').DataTable();
+  
+        $('#test2 tbody').on( 'click', 'td', function () {
+            cityid=table.cell(this).data();
+            retriveadminward(cityid);
+        } );
     });
      
 
@@ -298,7 +309,7 @@ $(document).ready(function(){
             fdata.push({
               formid :    formid,
               Question  :    q,
-              filterlists : filterlist,
+              filterlists : filterjson,
             });
 
           }
@@ -316,6 +327,10 @@ $(document).ready(function(){
 });
 
 
+
+function retriveadminward(cityid){
+  alert(cityid);
+}
 
 function tb(){
 
@@ -377,7 +392,7 @@ function getdata(fdata){
               var dis = { 
 
                         "mDataProp": keyelement[i]//dummy.slice(-1).pop()
-                        ,"sName": keyelement[i] //dummy.slice(-1).pop()
+                        ,"title": keyelement[i] //dummy.slice(-1).pop()
                         };
 
                console.log(dis);
