@@ -6,9 +6,11 @@ from django.views.decorators.csrf import csrf_exempt
 from django.http import HttpResponse
 from collections import OrderedDict
 from itertools import chain
-
+from local_settings import *
 
 # Create your views here.
+
+itemsetarray = []
 
 
 @csrf_exempt
@@ -82,13 +84,37 @@ def trav(node):
         return list(chain.from_iterable([trav(child) for child in node['children']]))
     else:
         return [node]
-
-def trav2(node,name):
+"""
+def trav2(node,name,itemsetarray):
     #print name
     if node["type"] == "group" or node["type"] == "repeat":
         #print node
         return list(chain.from_iterable([trav2(child,name + "/" +  child["name"]) for child in node['children']]))
     else:
+        node ['group'] = name
+        return [node]
+"""
+
+def trav2(node,name):
+    if node["type"] == "group" or node["type"] == "repeat":
+        return list(chain.from_iterable([trav2(child,name + "/" +  child["name"]) for child in node['children']]))
+    else:
+        if node["type"]=="select one":
+            try:
+                if(node["itemset"]=="admin_ward"):
+                    for i in itemsetarray:
+                        for k,v in i.items():
+                            if(k=="admin_ward"):
+                                node["children"] = v
+                                print v
+                if(node["itemset"]=="slum_name"):
+                    for i in itemsetarray:
+                        for k,v in i.items():
+                            if(k=="slum_name"):
+                                node["children"] = v
+                                print v
+            except:
+                pass
         node ['group'] = name
         return [node]
 
@@ -102,21 +128,24 @@ def printq(node):
 
 def datalist(formid):
     print formid
-    urlv = "http://192.168.2.6:8001/api/v1/forms/27/form.json"
+    urlv = KOBOCAT_FORM_URL + "forms/54/form.json"
     #urlv = "http://192.168.0.55:8001/api/v1/data/27?format=json"
     print ("Sending Request to",urlv)
     kobotoolbox_request = urllib2.Request(urlv)
-    kobotoolbox_request.add_header('Authorization',"OAuth2 a0028f740988d80cbe670f24a9456d655b8dd419")
+    kobotoolbox_request.add_header('Authorization',KOBOCAT_TOKEN)
     res = urllib2.urlopen(kobotoolbox_request)
     html = res.read()
     formdict = json.loads(html)
     node = []
     dictarray =[]
-    for dictarrayelement in formdict["children"]:
+    for key, value in (formdict["choices"]).items():
+        dummy = {}
+        dummy[key] = value
+        itemsetarray.append(dummy)
+    for dictarrayelement in formdict["children"] or formdict["choices"]:
         if dictarrayelement['type'] == "group" or dictarrayelement['type']== "select one":
             node.append(trav2(dictarrayelement,dictarrayelement["name"]))
             dictarray.append(dictdata(dictarrayelement))
-    print (node[3])
     node.pop()
     print len(node)
     questions = []
@@ -233,7 +262,7 @@ def retrivedata(data):
     print urlstring
     urlstring = urlstring + "}"
     print filterliststring
-    defaultfilterliststring = ["group_ce0hf58/Selct_city","group_ce0hf58/house_no","group_ye18c77/group_ud4em45/adhar_card_number"]
+    defaultfilterliststring = ["group_ce0hf58/city","group_ce0hf58/house_no","group_ye18c77/group_ud4em45/adhar_card_number","group_ce0hf58/admin_ward","group_ce0hf58/slum_name"]
     for i in defaultfilterliststring:
         filterliststring = filterliststring + '"' + i + '"' + "," 
     filterliststring = filterliststring[:-1]
@@ -241,12 +270,12 @@ def retrivedata(data):
     filterliststring = filterliststring + "]"
     print "filterliststring"
     print filterliststring
-    formid = 27
-    urlv = "http://192.168.2.6:8001/api/v1/data/" + str(formid) + "?query=" +  urlstring + filterliststring         
+    formid = 54
+    urlv = KOBOCAT_FORM_URL + "data/" + str(formid) + "?query=" +  urlstring + filterliststring         
     #urlv = "http://192.168.0.105:8001/api/v1/data/27?query={"Type_of_structure_occupancy": "01","group_ce0hf58/Selct_city":"3789"}" 
     print ("Sending Request to",urlv)
     kobotoolbox_request = urllib2.Request(urlv)
-    kobotoolbox_request.add_header('Authorization',"OAuth2 a0028f740988d80cbe670f24a9456d655b8dd419")
+    kobotoolbox_request.add_header('Authorization',KOBOCAT_TOKEN)
     res = urllib2.urlopen(kobotoolbox_request)
     html = res.read()
     formdatadict = json.loads(html)

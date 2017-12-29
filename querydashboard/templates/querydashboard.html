@@ -378,6 +378,18 @@ function getdata(fdata){
             testdata2 = json;
             console.log(testdata2);
 
+
+            for(i=0;i<gform.length;i++)
+            { 
+              if(gform[i]["key"] =="group_ce0hf58/city")
+              { 
+                console.log(gform[i]["options"]);
+              }  
+            }  
+
+
+
+
             var keyelement=Object.keys(testdata2[0]);
 
             for(i=0;i<keyelement.length;i++)
